@@ -1,0 +1,153 @@
+import Joi from "joi";
+import mongoSanitize from "mongo-sanitize";
+
+// Disallow MongoDB-style injection attempts
+const mongoInjectionPattern = /^\s*\$[a-zA-Z0-9_]+/;
+
+// ObjectId Schema (for MongoDB IDs)
+const objectIdSchema = Joi.string().length(24).hex().required();
+
+
+const safeString = (fieldName) =>
+  Joi.string()
+    .custom((value, helpers) => {
+      if (typeof value !== "string") {
+        return helpers.message(`${fieldName} must be a string.`);
+      }
+
+      // Sanitize input to remove any $ or . keys
+      const sanitized = mongoSanitize(value);
+
+      if (mongoInjectionPattern.test(sanitized)) {
+        return helpers.message(`${fieldName} contains potentially dangerous input.`);
+      }
+
+      // Optionally, reject if sanitized value differs (means suspicious input)
+      if (sanitized !== value) {
+        return helpers.message(`${fieldName} contains forbidden characters.`);
+      }
+
+      return sanitized;
+    })
+    .messages({
+      "string.base": `${fieldName} must be a string.`,
+    });
+
+
+export const registerSchema = Joi.object({
+  email: Joi.string().email().trim().required(),
+  username: safeString("Username").trim().min(3).max(30).required(),
+  password: safeString("Password").min(8).max(64).required(),
+  userAgent: Joi.string().trim().max(256).optional(),
+}).unknown(false);
+
+export const loginSchema = Joi.object({
+  usernameOrEmail: safeString("Username or Email").trim().required(),
+  password: safeString("Password").required(),
+  userAgent: Joi.string().trim().max(256).optional(),
+}).unknown(false);
+
+export const verifyEmailSchema = Joi.object({
+  code: Joi.string().length(24).hex().required(),
+}).unknown(false);
+
+export const passwordResetSchema = Joi.object({
+  password: safeString("Password").min(8).max(64).required(),
+  verificationCode: Joi.string().length(24).hex().required(),
+}).unknown(false);
+
+export const sendPasswordResetSchema = Joi.object({
+  email: Joi.string().email().trim().required(),
+}).unknown(false);
+
+export const refreshTokenSchema = Joi.object({
+  refreshToken: safeString("Refresh Token").required(),
+}).unknown(false);
+
+export const mfaCodeSchema = Joi.object({
+  code: Joi.string().length(6).pattern(/^\d+$/).required(),
+}).unknown(false);
+
+export const createClothesSchema = Joi.object({
+  name: safeString("Name").trim().min(1).max(255).required(),
+  category: Joi.string()
+    .valid("Male", "Female", "Unisex", "Other")
+    .required(),
+  type: safeString("Type").trim().min(1).max(100).required(),
+  size: Joi.array()
+    .items(safeString("Size").trim().min(1).max(20))
+    .min(1)
+    .required(),
+  color: Joi.array()
+    .items(safeString("Color").trim().min(1).max(30))
+    .min(1)
+    .required(),
+  price: Joi.number().greater(0).precision(2).required(),
+  inStock: Joi.boolean().optional(),
+  bestseller: Joi.boolean().optional(),
+  newArrival: Joi.boolean().optional(),
+  imagePath: safeString("Image Path").trim().max(5000).optional().allow(""),
+  description: safeString("Description").trim().max(10000).optional().allow(""),
+}).unknown(false);
+
+export const updateClothesSchema = Joi.object({
+  name: safeString("Name").trim().min(1).max(255).optional(),
+  category: Joi.string()
+    .valid("Male", "Female", "Unisex", "Other")
+    .optional(),
+  type: safeString("Type").trim().min(1).max(100).optional(),
+  size: Joi.array().items(safeString("Size").trim().min(1).max(20)).min(1).unique().optional(),
+  color: Joi.array().items(safeString("Color").trim().min(1).max(30)).min(1).unique().optional(),
+  price: Joi.number().greater(0).precision(2).optional(),
+  inStock: Joi.boolean().strict().optional(),
+  bestseller: Joi.boolean().strict().optional(),
+  newArrival: Joi.boolean().optional(),
+  imagePath: safeString("Image Path").trim().max(5000).optional().allow(""),
+  description: safeString("Description").trim().max(10000).optional().allow(""),
+}).min(1).unknown(false);
+
+export const idParamSchema = Joi.object({
+  id: objectIdSchema.label("ID"),
+});
+
+export const addToCartSchema = Joi.object({
+  itemID: objectIdSchema.label("Item ID"),
+  quantity: Joi.number().integer().min(1).default(1),
+  size: safeString("Size").min(1).max(20).required(),
+  color: safeString("Color").min(1).max(30).required(),
+}).unknown(false);
+
+export const updateCartSchema = Joi.object({
+  itemID: objectIdSchema.label("Item ID"),
+  quantity: Joi.number().integer().min(1).optional(),
+  size: safeString("Size").min(1).max(20).required(),
+  color: safeString("Color").min(1).max(30).required(),
+}).unknown(false);
+
+export const removeCartItemSchema = Joi.object({
+  size: safeString("Size").min(1).max(20).required(),
+  color: safeString("Color").min(1).max(30).required(),
+}).unknown(false);
+
+export const itemIDParamSchema = Joi.object({
+  itemID: objectIdSchema.label("Item ID"),
+});
+
+export const placeOrderSchema = Joi.object({
+  address: safeString("Address").min(5).max(500).required(),
+  paymentMethod: Joi.string().valid("khalti", "cod").required(), // allow only these two values
+}).unknown(false);
+
+export const orderIDParamSchema = Joi.object({
+  orderID: objectIdSchema.label("Order ID"),
+});
+
+export const updateOrderStatusSchema = Joi.object({
+  status: Joi.string().valid(
+    "pending",
+    "processing",
+    "shipped",
+    "delivered",
+    "cancelled"
+  ).required(),
+}).unknown(false);
