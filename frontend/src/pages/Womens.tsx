@@ -7,9 +7,9 @@ import { Link } from "react-router-dom";
 
 const filters = [
   "All",
-  "Tees",
-  "Polos",
-  "Outers",
+  "s",
+  "food",
+  "clothes",
   "Pants & Joggers",
   "Sweatpants",
   "Others",
@@ -23,7 +23,7 @@ const filterTypeSet = new Set([
 ]);
 
 const fallbackProductImage =
-  "https://raw.githubusercontent.com/nileshshrs/clothing-store/refs/heads/master/frontend/src/assets/PLUM_Sweetheart-Tank-3_768x_crop_center%402x.progressive.webp";
+  "https://images.unsplash.com/photo-1518717758536-85ae29035b6d?auto=format&fit=crop&w=400&q=80";
 
 function getDisplayPrice(price: Clothes["price"]): string {
   if (price && typeof price === "object" && "$numberDecimal" in price)
