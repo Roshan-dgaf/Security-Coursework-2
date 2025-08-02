@@ -1,15 +1,15 @@
 import { Instagram } from "lucide-react";
 
 const images = [
-  "https://raw.githubusercontent.com/nileshshrs/clothing-store/refs/heads/master/frontend/src/assets/1_590673ed-c289-4859-864b-a7a0dbeb2025_350x_crop_center%402x.progressive.webp",
-  "https://raw.githubusercontent.com/nileshshrs/clothing-store/refs/heads/master/frontend/src/assets/2_564b4029-571e-4db6-9ad8-9be9c8cb0188_350x_crop_center%402x.progressive.webp",
-  "https://raw.githubusercontent.com/nileshshrs/clothing-store/refs/heads/master/frontend/src/assets/3_c620fb5b-34c0-4ad9-b520-2d83afd87570_350x_crop_center%402x.progressive.webp",
-  "https://raw.githubusercontent.com/nileshshrs/clothing-store/refs/heads/master/frontend/src/assets/4_350x_crop_center%402x.progressive.webp",
-  "https://raw.githubusercontent.com/nileshshrs/clothing-store/refs/heads/master/frontend/src/assets/5_350x_crop_center%402x.progressive.webp",
-  "https://raw.githubusercontent.com/nileshshrs/clothing-store/refs/heads/master/frontend/src/assets/6_350x_crop_center%402x.progressive.webp",
-  "https://raw.githubusercontent.com/nileshshrs/clothing-store/refs/heads/master/frontend/src/assets/7_350x_crop_center%402x.progressive.webp",
-  "https://raw.githubusercontent.com/nileshshrs/clothing-store/refs/heads/master/frontend/src/assets/8_7b160054-f133-4a69-9e19-512719ee71e4_350x_crop_center%402x.progressive.webp",
-];
+  "https://images.unsplash.com/photo-1518717758536-85ae29035b6d?auto=format&fit=crop&w=400&q=80", // Cat
+  "https://images.unsplash.com/photo-1518715308788-3005759c61e9?auto=format&fit=crop&w=400&q=80", // Dog
+  "https://images.unsplash.com/photo-1518715308788-327f6b0037a7?auto=format&fit=crop&w=400&q=80", // Cat
+  "https://images.unsplash.com/photo-1558788353-f76d92427f16?auto=format&fit=crop&w=400&q=80", // Dog
+  "https://images.unsplash.com/photo-1518715308788-327f6b0037a7?auto=format&fit=crop&w=400&q=80", // Cat
+  "https://images.unsplash.com/photo-1558788353-f76d92427f16?auto=format&fit=crop&w=400&q=80", // Dog
+  "https://images.unsplash.com/photo-1518717758536-85ae29035b6d?auto=format&fit=crop&w=400&q=80", // Cat
+  "https://images.unsplash.com/photo-1518715308788-3005759c61e9?auto=format&fit=crop&w=400&q=80", // Dog
+]
 
 export default function EditorialGrid() {
   return (
