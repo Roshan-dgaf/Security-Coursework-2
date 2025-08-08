@@ -1,18 +1,19 @@
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import { Link, useNavigate } from "react-router-dom";
-import { useState } from "react";
 import { useAuth } from "@/context/AuthContext";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { Link, useNavigate } from "react-router-dom";
+import { z } from "zod";
 
 const USER_REGEX = /^[a-zA-Z0-9-_]{4,24}$/;
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,24}$/;
 const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
+// registerSchema
 const registerSchema = z.object({
   name: z
     .string()
@@ -160,27 +161,25 @@ const Register = () => {
                   <div className="flex items-center gap-2">
                     <div className="w-full h-2 bg-gray-200 rounded">
                       <div
-                        className={`h-2 rounded transition-all duration-200 ${
-                          meter.score === 1
+                        className={`h-2 rounded transition-all duration-200 ${meter.score === 1
                             ? meterColors[0] + " " + meterWidths[0]
                             : meter.score === 2
-                            ? meterColors[1] + " " + meterWidths[1]
-                            : meter.score === 3
-                            ? meterColors[2] + " " + meterWidths[2]
-                            : ""
-                        }`}
+                              ? meterColors[1] + " " + meterWidths[1]
+                              : meter.score === 3
+                                ? meterColors[2] + " " + meterWidths[2]
+                                : ""
+                          }`}
                       ></div>
                     </div>
                     <span
-                      className={`text-xs font-semibold ${
-                        meter.score === 1
+                      className={`text-xs font-semibold ${meter.score === 1
                           ? "text-red-600"
                           : meter.score === 2
-                          ? "text-yellow-600"
-                          : meter.score === 3
-                          ? "text-green-700"
-                          : ""
-                      }`}
+                            ? "text-yellow-600"
+                            : meter.score === 3
+                              ? "text-green-700"
+                              : ""
+                        }`}
                     >
                       {meter.label}
                     </span>
