@@ -16,6 +16,7 @@ const filters = [
   "Sweatpants",
   "Others",
 ];
+// FILTER TYPES SET
 const filterTypeSet = new Set([
   "Tees",
   "Polos",
